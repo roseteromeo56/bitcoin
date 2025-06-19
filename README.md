@@ -1,6 +1,6 @@
 Bitcoin Core integration/staging tree
 =====================================
-
+Romeo Rosete
 https://bitcoincore.org
 
 For an immediately usable, binary version of the Bitcoin Core software, see
