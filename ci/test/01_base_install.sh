@@ -20,14 +20,16 @@ if [ -n "$DPKG_ADD_ARCH" ]; then
 fi
 
 if [[ $CI_IMAGE_NAME_TAG == *centos* ]]; then
-  bash -c "dnf -y install epel-release"
-  bash -c 'dnf -y --allowerasing install' -- $CI_BASE_PACKAGES $PACKAGES
+  bash -c "dnf -y install epel-release" dd/fix-shell-injection-vulnerability
+  bash -c "dnf -y --allowerasing install" _ $CI_BASE_PACKAGES $PACKAGES
+  bash -c 'dnf -y --allowerasing install' -- $CI_BASE_PACKAGES $PACKAGES master
 elif [ "$CI_OS_NAME" != "macos" ]; then
   if [[ -n "${APPEND_APT_SOURCES_LIST}" ]]; then
     echo "${APPEND_APT_SOURCES_LIST}" >> /etc/apt/sources.list
   fi
-  ${CI_RETRY_EXE} apt-get update
-  ${CI_RETRY_EXE} bash -c 'apt-get install --no-install-recommends --no-upgrade -y' -- $PACKAGES $CI_BASE_PACKAGES
+  ${CI_RETRY_EXE} apt-get update dd/fix-shell-injection-vulnerability
+  ${CI_RETRY_EXE} bash -c "apt-get install --no-install-recommends --no-upgrade -y" _ $PACKAGES $CI_BASE_PACKAGES
+  ${CI_RETRY_EXE} bash -c 'apt-get install --no-install-recommends --no-upgrade -y' -- $PACKAGES $CI_BASE_PACKAGES master
 fi
 
 if [ -n "$PIP_PACKAGES" ]; then
