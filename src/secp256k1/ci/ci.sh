@@ -100,9 +100,9 @@ if [ $build_exit_code -ne 0 ]; then
 fi
 
 # Print information about binaries so that we can see that the architecture is correct
-file *tests* || true
-file bench* || true
-file .libs/* || true
+file -- *tests* || true
+file -- bench* || true
+file -- .libs/* || true
 
 # This tells `make check` to wrap test invocations.
 export LOG_COMPILER="$WRAPPER_CMD"
