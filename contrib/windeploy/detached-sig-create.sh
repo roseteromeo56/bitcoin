@@ -23,8 +23,9 @@ TIMESERVER=http://timestamp.comodoca.com
 CERTFILE="win-codesign.cert"
 
 mkdir -p "${OUTSUBDIR}"
-# shellcheck disable=SC2046
-basename -a $(ls -1 "${SRCDIR}"/*-unsigned.exe) | while read UNSIGNED; do
+for UNSIGNED in "${SRCDIR}"/*-unsigned.exe; do
+  [ -f "${UNSIGNED}" ] || continue
+  UNSIGNED="${UNSIGNED##*/}"
   echo Signing "${UNSIGNED}"
   "${OSSLSIGNCODE}" sign -certs "${CERTFILE}" -t "${TIMESERVER}" -h sha256 -in "${SRCDIR}/${UNSIGNED}" -out "${WORKDIR}/${UNSIGNED}" "$@"
   "${OSSLSIGNCODE}" extract-signature -pem -in "${WORKDIR}/${UNSIGNED}" -out "${OUTSUBDIR}/${UNSIGNED}.pem" && rm "${WORKDIR}/${UNSIGNED}"
